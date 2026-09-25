@@ -3,24 +3,16 @@ import Layout from "../layouts/Layout.astro";
 import { Image, getImage } from "astro:assets";
 import { SITE, SOCIALS } from "../config/site";
 import { ICONS } from "../components/icons";
+import Gallery from "../components/Gallery.astro";
+import { getGalleryItems } from "../lib/gallery-data";
 import logo from "../assets/brand/logo.png";
-import galleryData from "../data/gallery.json";
 // Placeholder hero background — swap for an artist-supplied portrait-ratio piece later.
 import heroBgSrc from "../assets/gallery/big-skull.png";
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/gallery/*.{png,jpg,jpeg,webp}",
-  { eager: true }
-);
+const TEASER_COUNT = 8;
 
-const items = await Promise.all(
-  galleryData.map(async (entry) => {
-    const mod = imageModules[`../assets/gallery/${entry.file}`];
-    const image = mod.default;
-    const full = await getImage({ src: image, width: 1600, format: "webp" });
-    return { ...entry, image, fullSrc: full.src };
-  })
-);
+const items = await getGalleryItems();
+const teaserItems = items.slice(0, TEASER_COUNT);
 
 const heroBg = await getImage({ src: heroBgSrc, width: 1400, format: "webp" });
 const heroBgStyle = `--hero-bg: radial-gradient(ellipse 75% 65% at center, rgba(11,11,13,.65) 0%, rgba(11,11,13,.2) 60%, rgba(11,11,13,0) 80%), linear-gradient(to bottom, rgba(11,11,13,.3), rgba(11,11,13,.9)), url(${heroBg.src})`;
@@ -37,29 +29,15 @@ const socials = SOCIALS.filter((s) => s.href && s.href !== "#");
       <p class="hero__scroll">Scroll</p>
     </section>
 
-    <section class="gallery" aria-label="Gallery">
-      {
-        items.map((item, i) => (
-          <button
-            class="tile"
-            type="button"
-            data-index={i}
-            data-full={item.fullSrc}
-            data-title={item.title}
-            aria-label={`View ${item.title} full size`}
-          >
-            <Image
-              src={item.image}
-              alt={item.title}
-              width={480}
-              format="webp"
-              loading={i < 6 ? "eager" : "lazy"}
-            />
-            <span class="tile__caption">{item.title}</span>
-          </button>
-        ))
-      }
-    </section>
+    <Gallery items={teaserItems} />
+
+    {
+      items.length > TEASER_COUNT && (
+        <div class="gallery-more">
+          <a class="gallery-more__link" href="/gallery">See all {items.length} pieces →</a>
+        </div>
+      )
+    }
 
     {
       socials.length > 0 && (
@@ -73,64 +51,4 @@ const socials = SOCIALS.filter((s) => s.href && s.href !== "#");
       )
     }
   </main>
-
-  <div id="lightbox" class="lightbox" hidden>
-    <button class="lightbox__close" id="lightbox-close" aria-label="Close">✕</button>
-    <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Previous">‹</button>
-    <div class="lightbox__frame">
-      <img id="lightbox-img" class="lightbox__img" src="" alt="" />
-    </div>
-    <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Next">›</button>
-    <p class="lightbox__caption" id="lightbox-caption"></p>
-  </div>
 </Layout>
-
-<script>
-  const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>(".tile"));
-  const lightbox = document.getElementById("lightbox")!;
-  const img = document.getElementById("lightbox-img") as HTMLImageElement;
-  const caption = document.getElementById("lightbox-caption")!;
-  const closeBtn = document.getElementById("lightbox-close")!;
-  const prevBtn = document.getElementById("lightbox-prev")!;
-  const nextBtn = document.getElementById("lightbox-next")!;
-
-  let current = -1;
-
-  function open(index: number) {
-    const tile = tiles[index];
-    if (!tile) return;
-    current = index;
-    img.src = tile.dataset.full ?? "";
-    img.alt = tile.dataset.title ?? "";
-    caption.textContent = tile.dataset.title ?? "";
-    lightbox.hidden = false;
-    document.body.style.overflow = "hidden";
-  }
-
-  function close() {
-    lightbox.hidden = true;
-    document.body.style.overflow = "";
-    current = -1;
-  }
-
-  function step(delta: number) {
-    if (current === -1) return;
-    open((current + delta + tiles.length) % tiles.length);
-  }
-
-  tiles.forEach((tile, i) => tile.addEventListener("click", () => open(i)));
-  closeBtn.addEventListener("click", close);
-  prevBtn.addEventListener("click", () => step(-1));
-  nextBtn.addEventListener("click", () => step(1));
-
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) close();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (lightbox.hidden) return;
-    if (e.key === "Escape") close();
-    if (e.key === "ArrowLeft") step(-1);
-    if (e.key === "ArrowRight") step(1);
-  });
-</script>

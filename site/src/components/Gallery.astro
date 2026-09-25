@@ -1,0 +1,95 @@
+---
+import { Image } from "astro:assets";
+import type { GalleryItem } from "../lib/gallery-data";
+
+interface Props {
+  items: GalleryItem[];
+  eagerCount?: number;
+}
+
+const { items, eagerCount = 6 } = Astro.props;
+---
+
+<section class="gallery" aria-label="Gallery">
+  {
+    items.map((item, i) => (
+      <button
+        class="tile"
+        type="button"
+        data-index={i}
+        data-full={item.fullSrc}
+        data-title={item.title}
+        aria-label={`View ${item.title} full size`}
+      >
+        <Image
+          src={item.image}
+          alt={item.title}
+          width={480}
+          format="webp"
+          loading={i < eagerCount ? "eager" : "lazy"}
+        />
+        <span class="tile__caption">{item.title}</span>
+      </button>
+    ))
+  }
+</section>
+
+<div id="lightbox" class="lightbox" hidden>
+  <button class="lightbox__close" id="lightbox-close" aria-label="Close">✕</button>
+  <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Previous">‹</button>
+  <div class="lightbox__frame">
+    <img id="lightbox-img" class="lightbox__img" src="" alt="" />
+  </div>
+  <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Next">›</button>
+  <p class="lightbox__caption" id="lightbox-caption"></p>
+</div>
+
+<script>
+  const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>(".tile"));
+  const lightbox = document.getElementById("lightbox")!;
+  const img = document.getElementById("lightbox-img") as HTMLImageElement;
+  const caption = document.getElementById("lightbox-caption")!;
+  const closeBtn = document.getElementById("lightbox-close")!;
+  const prevBtn = document.getElementById("lightbox-prev")!;
+  const nextBtn = document.getElementById("lightbox-next")!;
+
+  let current = -1;
+
+  function open(index: number) {
+    const tile = tiles[index];
+    if (!tile) return;
+    current = index;
+    img.src = tile.dataset.full ?? "";
+    img.alt = tile.dataset.title ?? "";
+    caption.textContent = tile.dataset.title ?? "";
+    lightbox.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function close() {
+    lightbox.hidden = true;
+    document.body.style.overflow = "";
+    current = -1;
+  }
+
+  function step(delta: number) {
+    if (current === -1) return;
+    open((current + delta + tiles.length) % tiles.length);
+  }
+
+  tiles.forEach((tile, i) => tile.addEventListener("click", () => open(i)));
+  closeBtn.addEventListener("click", close);
+  prevBtn.addEventListener("click", () => step(-1));
+  nextBtn.addEventListener("click", () => step(1));
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.hidden) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") step(-1);
+    if (e.key === "ArrowRight") step(1);
+  });
+</script>

@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Gallery from "../components/Gallery.astro";
+import { getGalleryItems } from "../lib/gallery-data";
+import { SITE } from "../config/site";
+
+const items = await getGalleryItems();
+---
+
+<Layout title={`Gallery — ${SITE.name}`} description={SITE.description}>
+  <main class="gallery-page">
+    <a class="back" href="/">← Back</a>
+    <Gallery items={items} eagerCount={8} />
+  </main>
+</Layout>
+
+<style>
+  .gallery-page {
+    padding-top: 2rem;
+  }
+
+  .back {
+    display: block;
+    max-width: 1400px;
+    margin: 0 auto 1.5rem;
+    padding: 0 1rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    transition: color 0.2s ease;
+  }
+
+  .back:hover,
+  .back:focus-visible {
+    color: var(--accent);
+  }
+</style>

@@ -287,6 +287,12 @@ button {
   max-height: 80svh;
   object-fit: contain;
   border: 1px solid var(--border);
+  opacity: 1;
+  transition: opacity 150ms ease;
+}
+
+.lightbox__img.is-fading {
+  opacity: 0;
 }
 
 .lightbox__caption {
@@ -310,13 +316,19 @@ button {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .lightbox__close:hover,
 .lightbox__nav:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.lightbox__nav.is-pulsing {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .lightbox__close {

@@ -55,15 +55,32 @@ const { items, eagerCount = 6 } = Astro.props;
 
   let current = -1;
 
-  function open(index: number) {
-    const tile = tiles[index];
-    if (!tile) return;
-    current = index;
+  const CROSSFADE_MS = 150;
+
+  function setImage(tile: HTMLButtonElement) {
     img.src = tile.dataset.full ?? "";
     img.alt = tile.dataset.title ?? "";
     caption.textContent = tile.dataset.title ?? "";
+  }
+
+  function open(index: number) {
+    const tile = tiles[index];
+    if (!tile) return;
+    const wasOpen = !lightbox.hidden;
+    current = index;
     lightbox.hidden = false;
     document.body.style.overflow = "hidden";
+
+    if (!wasOpen) {
+      setImage(tile);
+      return;
+    }
+
+    img.classList.add("is-fading");
+    setTimeout(() => {
+      setImage(tile);
+      img.classList.remove("is-fading");
+    }, CROSSFADE_MS);
   }
 
   function close() {
@@ -75,6 +92,12 @@ const { items, eagerCount = 6 } = Astro.props;
   function step(delta: number) {
     if (current === -1) return;
     open((current + delta + tiles.length) % tiles.length);
+  }
+
+  function pulseNav(delta: number) {
+    const btn = delta < 0 ? prevBtn : nextBtn;
+    btn.classList.add("is-pulsing");
+    setTimeout(() => btn.classList.remove("is-pulsing"), 220);
   }
 
   tiles.forEach((tile, i) => tile.addEventListener("click", () => open(i)));
@@ -114,7 +137,9 @@ const { items, eagerCount = 6 } = Astro.props;
       const dx = t.clientX - touchStartX;
       const dy = t.clientY - touchStartY;
       if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        step(dx < 0 ? 1 : -1);
+        const delta = dx < 0 ? 1 : -1;
+        pulseNav(delta);
+        step(delta);
       }
     },
     { passive: true }
@@ -145,7 +170,9 @@ const { items, eagerCount = 6 } = Astro.props;
       }, WHEEL_RESET_MS);
 
       if (Math.abs(wheelAccumX) > WHEEL_THRESHOLD) {
-        step(wheelAccumX > 0 ? 1 : -1);
+        const delta = wheelAccumX > 0 ? 1 : -1;
+        pulseNav(delta);
+        step(delta);
         wheelAccumX = 0;
         wheelLocked = true;
         setTimeout(() => {

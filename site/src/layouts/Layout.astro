@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { SITE } from "../config/site";
 import { withBase } from "../lib/base";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import ogImage from "../assets/brand/logo.png";
 
 interface Props {
@@ -16,6 +17,16 @@ const ogUrl = new URL(ogImage.src, Astro.site ?? Astro.url.origin);
 <!doctype html>
 <html lang="en">
   <head>
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("penno-theme");
+          if (stored === "light" || stored === "dark") {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch (e) {}
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href={withBase("favicon.svg")} type="image/svg+xml" />
@@ -36,6 +47,7 @@ const ogUrl = new URL(ogImage.src, Astro.site ?? Astro.url.origin);
     />
   </head>
   <body>
+    <ThemeToggle />
     <slot />
   </body>
 </html>

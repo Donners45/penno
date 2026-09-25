@@ -23,7 +23,8 @@ const socials = SOCIALS.filter((s) => s.href && s.href !== "#");
 
 <Layout>
   <main>
-    <section class="hero" style={heroBgStyle}>
+    <section class="hero">
+      <div class="hero-bg" style={heroBgStyle}></div>
       <Image class="hero__logo" src={logo} alt={SITE.name} width={440} priority />
       {SITE.tagline && <p class="hero__tagline">{SITE.tagline}</p>}
       <a class="hero__link" href={withBase("about")}>Statement →</a>

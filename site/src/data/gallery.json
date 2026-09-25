@@ -1,0 +1,157 @@
+[
+  {
+    "slug": "acacia",
+    "title": "Acacia",
+    "file": "acacia.png"
+  },
+  {
+    "slug": "alien",
+    "title": "Alien",
+    "file": "alien.png"
+  },
+  {
+    "slug": "axe",
+    "title": "Axe",
+    "file": "axe.png"
+  },
+  {
+    "slug": "big-skull",
+    "title": "Big skull",
+    "file": "big-skull.png"
+  },
+  {
+    "slug": "blindfold",
+    "title": "Blindfold",
+    "file": "blindfold.png"
+  },
+  {
+    "slug": "buzzsaw",
+    "title": "Buzzsaw",
+    "file": "buzzsaw.png"
+  },
+  {
+    "slug": "creature",
+    "title": "Creature",
+    "file": "creature.png"
+  },
+  {
+    "slug": "dead",
+    "title": "Dead",
+    "file": "dead.png"
+  },
+  {
+    "slug": "demonic",
+    "title": "Demonic",
+    "file": "demonic.png"
+  },
+  {
+    "slug": "deskull",
+    "title": "Deskull",
+    "file": "deskull.png"
+  },
+  {
+    "slug": "doll",
+    "title": "Doll",
+    "file": "doll.png"
+  },
+  {
+    "slug": "dragon-skull",
+    "title": "Dragon skull",
+    "file": "dragon-skull.png"
+  },
+  {
+    "slug": "exocism",
+    "title": "Exocism",
+    "file": "exocism.png"
+  },
+  {
+    "slug": "gas",
+    "title": "Gas",
+    "file": "gas.png"
+  },
+  {
+    "slug": "goat",
+    "title": "Goat",
+    "file": "goat.png"
+  },
+  {
+    "slug": "half-face",
+    "title": "Half face",
+    "file": "half-face.png"
+  },
+  {
+    "slug": "hanging-skull",
+    "title": "Hanging skull",
+    "file": "hanging-skull.png"
+  },
+  {
+    "slug": "king",
+    "title": "King",
+    "file": "king.png"
+  },
+  {
+    "slug": "mask",
+    "title": "Mask",
+    "file": "mask.png"
+  },
+  {
+    "slug": "nun",
+    "title": "Nun",
+    "file": "nun.png"
+  },
+  {
+    "slug": "nun-reaper",
+    "title": "Nun Reaper",
+    "file": "nun-reaper.png"
+  },
+  {
+    "slug": "rat",
+    "title": "Rat",
+    "file": "rat.png"
+  },
+  {
+    "slug": "ribs",
+    "title": "Ribs",
+    "file": "ribs.png"
+  },
+  {
+    "slug": "skream",
+    "title": "Skream",
+    "file": "skream.png"
+  },
+  {
+    "slug": "the-scream",
+    "title": "The scream",
+    "file": "the-scream.png"
+  },
+  {
+    "slug": "thorn",
+    "title": "Thorn",
+    "file": "thorn.png"
+  },
+  {
+    "slug": "thorned",
+    "title": "Thorned",
+    "file": "thorned.png"
+  },
+  {
+    "slug": "undeath",
+    "title": "Undeath",
+    "file": "undeath.png"
+  },
+  {
+    "slug": "unearthed",
+    "title": "Unearthed",
+    "file": "unearthed.png"
+  },
+  {
+    "slug": "vampiro",
+    "title": "Vampiro",
+    "file": "vampiro.png"
+  },
+  {
+    "slug": "zombiedeath",
+    "title": "Zombie Death",
+    "file": "zombiedeath.png"
+  }
+]

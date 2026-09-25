@@ -92,4 +92,67 @@ const { items, eagerCount = 6 } = Astro.props;
     if (e.key === "ArrowLeft") step(-1);
     if (e.key === "ArrowRight") step(1);
   });
+
+  const SWIPE_THRESHOLD = 50;
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  lightbox.addEventListener(
+    "touchstart",
+    (e) => {
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+    },
+    { passive: true }
+  );
+
+  lightbox.addEventListener(
+    "touchend",
+    (e) => {
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        step(dx < 0 ? 1 : -1);
+      }
+    },
+    { passive: true }
+  );
+
+  // Trackpad two-finger swipe — arrives as wheel events (not touch), in a burst
+  // of small deltas rather than one clean gesture, so accumulate + lock out.
+  const WHEEL_THRESHOLD = 60;
+  const WHEEL_RESET_MS = 150;
+  const WHEEL_LOCKOUT_MS = 400;
+  let wheelAccumX = 0;
+  let wheelResetTimer: ReturnType<typeof setTimeout> | undefined;
+  let wheelLocked = false;
+
+  lightbox.addEventListener(
+    "wheel",
+    (e) => {
+      if (lightbox.hidden) return;
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+
+      e.preventDefault();
+      if (wheelLocked) return;
+
+      wheelAccumX += e.deltaX;
+      clearTimeout(wheelResetTimer);
+      wheelResetTimer = setTimeout(() => {
+        wheelAccumX = 0;
+      }, WHEEL_RESET_MS);
+
+      if (Math.abs(wheelAccumX) > WHEEL_THRESHOLD) {
+        step(wheelAccumX > 0 ? 1 : -1);
+        wheelAccumX = 0;
+        wheelLocked = true;
+        setTimeout(() => {
+          wheelLocked = false;
+        }, WHEEL_LOCKOUT_MS);
+      }
+    },
+    { passive: false }
+  );
 </script>

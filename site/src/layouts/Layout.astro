@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { SITE } from "../config/site";
+import { withBase } from "../lib/base";
 import ogImage from "../assets/brand/logo.png";
 
 interface Props {
@@ -17,7 +18,7 @@ const ogUrl = new URL(ogImage.src, Astro.site ?? Astro.url.origin);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase("favicon.svg")} type="image/svg+xml" />
     <title>{title}</title>
     <meta name="description" content={description} />
 

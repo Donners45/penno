@@ -5,6 +5,7 @@ import { SITE, SOCIALS } from "../config/site";
 import { ICONS } from "../components/icons";
 import Gallery from "../components/Gallery.astro";
 import { getGalleryItems } from "../lib/gallery-data";
+import { withBase } from "../lib/base";
 import logo from "../assets/brand/logo.png";
 // Placeholder hero background — swap for an artist-supplied portrait-ratio piece later.
 import heroBgSrc from "../assets/gallery/big-skull.png";
@@ -25,7 +26,7 @@ const socials = SOCIALS.filter((s) => s.href && s.href !== "#");
     <section class="hero" style={heroBgStyle}>
       <Image class="hero__logo" src={logo} alt={SITE.name} width={440} priority />
       {SITE.tagline && <p class="hero__tagline">{SITE.tagline}</p>}
-      <a class="hero__link" href="/about">Statement →</a>
+      <a class="hero__link" href={withBase("about")}>Statement →</a>
       <p class="hero__scroll">Scroll</p>
     </section>
 
@@ -34,7 +35,7 @@ const socials = SOCIALS.filter((s) => s.href && s.href !== "#");
     {
       items.length > TEASER_COUNT && (
         <div class="gallery-more">
-          <a class="gallery-more__link" href="/gallery">See all {items.length} pieces →</a>
+          <a class="gallery-more__link" href={withBase("gallery")}>See all {items.length} pieces →</a>
         </div>
       )
     }

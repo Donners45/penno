@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { getImage } from "astro:assets";
 import { SITE } from "../config/site";
+import { withBase } from "../lib/base";
 import bigSkull from "../assets/gallery/big-skull.png";
 
 const bg = await getImage({ src: bigSkull, width: 1920, format: "webp" });
@@ -12,7 +13,7 @@ const bgStyle = `background-image: linear-gradient(to bottom, rgba(11,11,13,.55)
   <div class="parallax" style={bgStyle}></div>
 
   <main class="page">
-    <a class="back" href="/">← Back</a>
+    <a class="back" href={withBase("")}>← Back</a>
 
     <article class="prose">
       <h1>Statement</h1>

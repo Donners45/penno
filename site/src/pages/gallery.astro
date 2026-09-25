@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Gallery from "../components/Gallery.astro";
 import { getGalleryItems } from "../lib/gallery-data";
+import { withBase } from "../lib/base";
 import { SITE } from "../config/site";
 
 const items = await getGalleryItems();
@@ -9,7 +10,7 @@ const items = await getGalleryItems();
 
 <Layout title={`Gallery — ${SITE.name}`} description={SITE.description}>
   <main class="gallery-page">
-    <a class="back" href="/">← Back</a>
+    <a class="back" href={withBase("")}>← Back</a>
     <Gallery items={items} eagerCount={8} />
   </main>
 </Layout>

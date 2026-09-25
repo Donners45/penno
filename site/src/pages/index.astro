@@ -5,6 +5,8 @@ import { SITE, SOCIALS } from "../config/site";
 import { ICONS } from "../components/icons";
 import logo from "../assets/brand/logo.png";
 import galleryData from "../data/gallery.json";
+// Placeholder hero background — swap for an artist-supplied portrait-ratio piece later.
+import heroBgSrc from "../assets/gallery/big-skull.png";
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
   "../assets/gallery/*.{png,jpg,jpeg,webp}",
@@ -20,12 +22,15 @@ const items = await Promise.all(
   })
 );
 
+const heroBg = await getImage({ src: heroBgSrc, width: 1400, format: "webp" });
+const heroBgStyle = `--hero-bg: linear-gradient(to bottom, rgba(11,11,13,.35), rgba(11,11,13,.9)), url(${heroBg.src})`;
+
 const socials = SOCIALS.filter((s) => s.href && s.href !== "#");
 ---
 
 <Layout>
   <main>
-    <section class="hero">
+    <section class="hero" style={heroBgStyle}>
       <Image class="hero__logo" src={logo} alt={SITE.name} width={440} priority />
       {SITE.tagline && <p class="hero__tagline">{SITE.tagline}</p>}
       <a class="hero__link" href="/about">Statement →</a>

@@ -116,7 +116,7 @@ const { items, eagerCount = 6 } = Astro.props;
     if (e.key === "ArrowRight") step(1);
   });
 
-  const SWIPE_THRESHOLD = 50;
+  const SWIPE_THRESHOLD = 75;
   let touchStartX = 0;
   let touchStartY = 0;
 
@@ -147,7 +147,7 @@ const { items, eagerCount = 6 } = Astro.props;
 
   // Trackpad two-finger swipe — arrives as wheel events (not touch), in a burst
   // of small deltas rather than one clean gesture, so accumulate + lock out.
-  const WHEEL_THRESHOLD = 60;
+  const WHEEL_THRESHOLD = 100;
   const WHEEL_RESET_MS = 150;
   const WHEEL_LOCKOUT_MS = 400;
   let wheelAccumX = 0;

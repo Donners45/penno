@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image, getImage } from "astro:assets";
-import { SITE, SOCIALS } from "../config/site";
-import { ICONS } from "../components/icons";
+import { SITE } from "../config/site";
 import Gallery from "../components/Gallery.astro";
 import { getGalleryItems } from "../lib/gallery-data";
 import { withBase } from "../lib/base";
@@ -18,7 +17,6 @@ const teaserItems = items.slice(0, TEASER_COUNT);
 const heroBg = await getImage({ src: heroBgSrc, width: 1400, format: "webp" });
 const heroBgStyle = `--hero-bg: radial-gradient(ellipse 75% 65% at center, rgba(11,11,13,.65) 0%, rgba(11,11,13,.2) 60%, rgba(11,11,13,0) 80%), linear-gradient(to bottom, rgba(11,11,13,.3), rgba(11,11,13,.9)), url(${heroBg.src})`;
 
-const socials = SOCIALS.filter((s) => s.href && s.active);
 ---
 
 <Layout>
@@ -38,18 +36,6 @@ const socials = SOCIALS.filter((s) => s.href && s.active);
         <div class="gallery-more">
           <a class="gallery-more__link" href={withBase("gallery")}>See all {items.length} pieces →</a>
         </div>
-      )
-    }
-
-    {
-      socials.length > 0 && (
-        <nav class="socials" aria-label="Social links">
-          {socials.map((s) => (
-            <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-              <svg viewBox="0 0 24 24" fill="none" set:html={ICONS[s.icon]} />
-            </a>
-          ))}
-        </nav>
       )
     }
   </main>

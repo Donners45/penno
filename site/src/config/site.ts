@@ -9,9 +9,9 @@ export const SITE = {
 
 export type SocialIcon = "instagram" | "tiktok" | "twitter" | "email";
 
-export const SOCIALS: { label: string; href: string; icon: SocialIcon }[] = [
-  { label: "Instagram", href: "#", icon: "instagram" },
-  { label: "TikTok", href: "#", icon: "tiktok" },
-  { label: "Twitter/X", href: "#", icon: "twitter" },
-  { label: "Email", href: "mailto:hello@example.com", icon: "email" },
+export const SOCIALS: { label: string; href: string; icon: SocialIcon, active: boolean }[] = [
+  { label: "Instagram", href: "#", icon: "instagram", active: true },
+  { label: "TikTok", href: "#", icon: "tiktok", active: false  },
+  { label: "Twitter/X", href: "#", icon: "twitter", active: false  },
+  { label: "Email", href: "mailto:hello@example.com", icon: "email", active: true },
 ];

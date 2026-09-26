@@ -342,6 +342,7 @@ button {
 .lightbox__nav--prev {
   left: -1rem;
   transform: translateX(-100%);
+  z-index: 1000;
 }
 
 .lightbox__nav--next {
